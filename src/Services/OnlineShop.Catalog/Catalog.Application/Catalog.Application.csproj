@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Catalog.Application.Contract\Catalog.Application.Contract.csproj" />
     <ProjectReference Include="..\Catalog.Infrastructure.Database\Catalog.Infrastructure.Database.csproj" />
   </ItemGroup>
