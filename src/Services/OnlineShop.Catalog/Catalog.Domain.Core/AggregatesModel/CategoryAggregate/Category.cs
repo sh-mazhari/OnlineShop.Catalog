@@ -18,28 +18,40 @@ namespace Catalog.Domain.Core
 
         private readonly List<CategoryFeature> _categoryFeatures = new List<CategoryFeature>();
         public IReadOnlyList<CategoryFeature> CategoryFeatures => _categoryFeatures;
-       
-        
-        internal static Category CreateNew(string categoryName, bool isActive, string desscription, List<FeatureId> features)
+
+
+        public static Category CreateNew(string categoryName, bool isActive, string desscription, List<Guid> features,
+            string? thumbnailPath, string? thumbnailName, string? thumbnailExtension, int? thumbnailSize)
         {
-            return new Category(categoryName, isActive, desscription, features);
+            return new Category(categoryName, isActive, desscription, features, thumbnailPath, thumbnailName, thumbnailExtension, thumbnailSize);
         }
 
-        private void BuildFeatures(List<FeatureId> featureData)
+        private void BuildFeatures(List<Guid> featureData)
         {
             featureData.ForEach(featureId =>
             {
-                var newFeature = CategoryFeature.CreateNew(Id, featureId);
+                var newFeature = CategoryFeature.CreateNew(Id, new FeatureId(featureId));
                 _categoryFeatures.Add(newFeature);
             });
         }
 
-        private Category(string categoryName, bool isActive, string desscription, List<FeatureId> features)
+        private void BuildThumbnail(string? filePath, string? fileName, string? fileExtension, int? fileSize)
+        {
+            if (string.IsNullOrEmpty(filePath)) return;
+            Thumbnail.FilePath = filePath;
+            Thumbnail.FileName = fileName;
+            Thumbnail.Extension = fileExtension;
+            Thumbnail.Size = fileSize.Value;
+        }
+
+        private Category(string categoryName, bool isActive, string desscription, List<Guid> features,
+            string? thumbnailPath, string? thumbnailName, string? thumbnailExtension, int? thumbnailSize)
         {
             //validation....
             CategoryName = categoryName;
             IsActive = isActive;
             Description = desscription;
+            BuildThumbnail(thumbnailPath, thumbnailName, thumbnailExtension, thumbnailSize);
             BuildFeatures(features);
         }
 
