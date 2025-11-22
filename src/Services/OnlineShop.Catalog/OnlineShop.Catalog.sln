@@ -3,20 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OnlineShop.Catalog.Domain.Application", "OnlineShop.Catalog.Domain.Application", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OnlineShop.Catalog.Domain.Application.Contract", "OnlineShop.Catalog.Domain.Application.Contract", "{C6BE50A1-5BA9-4605-8799-2AC8DAE0ACDD}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OnlineShop.Catalog.Domain.Core", "OnlineShop.Catalog.Domain.Core", "{A3B65268-0C7E-4316-AB91-8289C8B96C47}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OnlineShop.Catalog.Domain.Service", "OnlineShop.Catalog.Domain.Service", "{1D8D4376-5505-4564-9C66-8762F02799F1}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OnlineShop.Catalog.Infrastructure", "OnlineShop.Catalog.Infrastructure", "{8AA783B0-29A6-4EC7-B6D6-07B5748A1F0F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OnlineShop.Catalog.Infrastructure.API", "OnlineShop.Catalog.Infrastructure.API", "{7853236E-ACBA-48C4-A7D8-17DD50AEA725}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OnlineShop.Catalog.Infrastructure.Database", "OnlineShop.Catalog.Infrastructure.Database", "{B27B8A60-EF8E-480E-932B-BE1FA383FB40}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Application", "Catalog.Application\Catalog.Application.csproj", "{DC5E3B5C-E741-4400-8143-E5FD18CBE340}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Application.Contract", "Catalog.Application.Contract\Catalog.Application.Contract.csproj", "{41FF1AF7-62C4-4044-98D3-73AD862B71EA}"
@@ -68,15 +54,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{DC5E3B5C-E741-4400-8143-E5FD18CBE340} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{41FF1AF7-62C4-4044-98D3-73AD862B71EA} = {C6BE50A1-5BA9-4605-8799-2AC8DAE0ACDD}
-		{86C6ED4B-E073-4DA7-AEB8-5FD7BD563FA3} = {A3B65268-0C7E-4316-AB91-8289C8B96C47}
-		{133FA098-BC23-4012-A930-32395921CC1E} = {1D8D4376-5505-4564-9C66-8762F02799F1}
-		{679F3CB1-8D37-4E60-95DE-BFFF1B06FEC0} = {8AA783B0-29A6-4EC7-B6D6-07B5748A1F0F}
-		{29D429C6-44D6-4669-B5F1-152C9E384242} = {B27B8A60-EF8E-480E-932B-BE1FA383FB40}
-		{DC263114-0C78-4A3D-9933-3B13C8DF80CA} = {7853236E-ACBA-48C4-A7D8-17DD50AEA725}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06AD894E-280F-413B-B4DA-736D8C5175E6}
