@@ -7,11 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\Extensions\**" />
+    <EmbeddedResource Remove="Common\Extensions\**" />
+    <None Remove="Common\Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Common\FileStorage\LocalFileStorageService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Catalog.Application.Contract\Catalog.Application.Contract.csproj" />
+    <ProjectReference Include="..\Catalog.Domain.Core\Catalog.Domain.Core.csproj" />
     <ProjectReference Include="..\Catalog.Infrastructure.Database\Catalog.Infrastructure.Database.csproj" />
   </ItemGroup>
 

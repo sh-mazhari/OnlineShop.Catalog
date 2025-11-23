@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Primitives;
 using System.Text;
 
-namespace Catalog.Application.Common.Extensions;
+namespace Catalog.Infrastructure.Common.Extensions;
 
 public class PathExtensions
 {
