@@ -8,6 +8,7 @@ using Catalog.Infrastructure.Mapping;
 using MediatR;
 using Catalog.Infrastructure.Common;
 using Catalog.Infrastructure.FileStorage;
+using Catalog.Infrastructure.Repositories;
 
 namespace Catalog.Infrastructure;
 
@@ -18,7 +19,9 @@ public static class Startup
         MapsterSettings.Configure();
         return services
             .AddMediatR(Assembly.GetExecutingAssembly())
-            .AddServices();
+            .AddServices()
+            .AddScoped(typeof(Catalog.Domain.Core.SeedWork.IReadRepository<>), typeof(ApplicationDbRepository<>))
+            .AddScoped(typeof(Catalog.Domain.Core.SeedWork.IGenericRepository<>), typeof(ApplicationDbRepository<>));
     }
 
 

@@ -1,12 +1,22 @@
 using Catalog.API.Configurations;
 using Catalog.Application.Contract.Dtos;
 using Catalog.Application.IServices;
+using Catalog.Infrastructure;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
+//var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+//{
+//    ApplicationName = typeof(Program).Assembly.FullName,
+//    ContentRootPath = Path.GetFullPath(Directory.GetCurrentDirectory()),
+//    WebRootPath = Path.GetFullPath(Directory.GetCurrentDirectory()),
+//    Args = args
+//});
 
 // Add services to the container.
 builder.Services.AddDaprClient();
 
+builder.Services.AddInfrastructure(builder.Configuration);
 // Add services to the container.
 builder.Services.AddApplication();
 
@@ -26,10 +36,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
-//app.MapControllers();
+app.MapControllers();
 
 app.MapGet("/", () => "Hello World!");
 

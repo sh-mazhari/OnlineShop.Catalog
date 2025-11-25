@@ -21,10 +21,19 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.0" />
   </ItemGroup>
+	
+<ItemGroup>
+    <Folder Include="Services\ProductCQRS\" />
+  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Services\ProductCQRS\" />
+	</ItemGroup>
 
-  <ItemGroup>
+	       <ItemGroup>
     <ProjectReference Include="..\Catalog.Application.Contract\Catalog.Application.Contract.csproj" />
     <ProjectReference Include="..\Catalog.Domain.Core\Catalog.Domain.Core.csproj" />
     <ProjectReference Include="..\Catalog.Infrastructure.Database\Catalog.Infrastructure.Database.csproj" />

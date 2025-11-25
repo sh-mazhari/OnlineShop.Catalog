@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -10,6 +11,8 @@ public static class Startup
         var assembly = Assembly.GetExecutingAssembly();
         return services
             .AddValidatorsFromAssembly(assembly)
-            .AddMediatR(assembly);
+            .AddMediatR(assembly)
+            .AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+
     }
 }

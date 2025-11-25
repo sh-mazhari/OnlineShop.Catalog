@@ -23,11 +23,14 @@ namespace Catalog.Domain.Core
         public static Category CreateNew(string categoryName, bool isActive, string desscription, List<Guid> features,
             string? thumbnailPath, string? thumbnailName, string? thumbnailExtension, int? thumbnailSize)
         {
-            return new Category(categoryName, isActive, desscription, features, thumbnailPath, thumbnailName, thumbnailExtension, thumbnailSize);
+            var categoryId = new CategoryId(Guid.NewGuid());
+            return new Category(categoryId, categoryName, isActive, desscription, features, thumbnailPath, thumbnailName, thumbnailExtension, thumbnailSize);
         }
 
         private void BuildFeatures(List<Guid> featureData)
         {
+            if (featureData == null) return;
+
             featureData.ForEach(featureId =>
             {
                 var newFeature = CategoryFeature.CreateNew(Id, new FeatureId(featureId));
@@ -38,16 +41,18 @@ namespace Catalog.Domain.Core
         private void BuildThumbnail(string? filePath, string? fileName, string? fileExtension, int? fileSize)
         {
             if (string.IsNullOrEmpty(filePath)) return;
+            Thumbnail = new CategoryThumbnail();
             Thumbnail.FilePath = filePath;
             Thumbnail.FileName = fileName;
             Thumbnail.Extension = fileExtension;
             Thumbnail.Size = fileSize.Value;
         }
 
-        private Category(string categoryName, bool isActive, string desscription, List<Guid> features,
+        private Category(CategoryId id, string categoryName, bool isActive, string desscription, List<Guid> features,
             string? thumbnailPath, string? thumbnailName, string? thumbnailExtension, int? thumbnailSize)
         {
             //validation....
+            Id = id;
             CategoryName = categoryName;
             IsActive = isActive;
             Description = desscription;

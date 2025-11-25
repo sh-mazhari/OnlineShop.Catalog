@@ -24,7 +24,7 @@ namespace Catalog.API.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Post(CreateCategoryRequest createCategoryRequest)
+        public async Task<IActionResult> Post([FromForm] CreateCategoryRequest createCategoryRequest)
         {
             var result = await _mediator.Send(createCategoryRequest);
             return Ok(result);
