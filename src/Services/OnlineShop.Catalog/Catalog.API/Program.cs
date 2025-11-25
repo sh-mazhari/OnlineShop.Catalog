@@ -5,6 +5,9 @@ using Catalog.Application.IServices;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDaprClient();
+
+// Add services to the container.
 builder.Services.AddApplication();
 
 builder.Services.AddControllers();
