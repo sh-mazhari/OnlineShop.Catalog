@@ -6,6 +6,8 @@ using Catalog.Application.Common.FileStorage;
 using Catalog.Domain.Core.SeedWork;
 using Catalog.Domain.Core;
 using Microsoft.AspNetCore.Components.Forms;
+using Catalog.Application.Services.CategoryCQRS.Queries;
+using Catalog.Application.Services.CategoryCQRS.Commands.CreateCategory;
 
 namespace Catalog.API.Controllers
 {
@@ -22,6 +24,13 @@ namespace Catalog.API.Controllers
         public CategoryController(IMediator mediator) =>
            (_mediator) = (mediator);
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var query = new GetCategoryQuery { Id = id };
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] CreateCategoryRequest createCategoryRequest)

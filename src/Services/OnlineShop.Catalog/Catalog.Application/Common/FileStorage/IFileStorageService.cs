@@ -13,8 +13,10 @@ namespace Catalog.Application.Common.FileStorage
     public interface IFileStorageService : ITransientService
     {
         public Task<FileSaveResultDto?> UploadAsync<T>(IFormFile file, FileType supportedFileType, CancellationToken cancellationToken = default)
-        where T : class;
+where T : class;
 
         public void Remove(string? path);
+
+        public string GetFilePath(string? path);
     }
 }
