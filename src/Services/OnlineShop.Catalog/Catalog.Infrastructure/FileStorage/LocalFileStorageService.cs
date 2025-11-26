@@ -1,9 +1,8 @@
 ﻿using Catalog.Application.Common.FileStorage;
 using Catalog.Domain.Core.Common;
 using Catalog.Infrastructure.Common.Extensions;
-using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
@@ -11,6 +10,14 @@ namespace Catalog.Infrastructure.FileStorage;
 
 public class LocalFileStorageService : IFileStorageService
 {
+    private readonly IHostingEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _context;
+
+    public LocalFileStorageService(IHostingEnvironment hostingEnvironment, IHttpContextAccessor context)
+    {
+        _hostingEnvironment = hostingEnvironment;
+        _context = context;
+    }
     public async Task<FileSaveResultDto?> UploadAsync<T>(IFormFile file, FileType supportedFileType, CancellationToken cancellationToken = default)
     where T : class
     {
@@ -21,58 +28,69 @@ public class LocalFileStorageService : IFileStorageService
 
         if (Path.GetExtension(file.FileName) is null || !supportedFileType.GetDescriptionList().Contains(Path.GetExtension(file.FileName).ToLower()))
             throw new InvalidOperationException("File Format Not Supported.");
+
         if (file.Name is null)
             throw new InvalidOperationException("Name is required.");
 
-        using (var streamData = new MemoryStream())
+        var fileSaveResult = new FileSaveResultDto();
+
+        string folder = typeof(T).Name;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            file.CopyTo(streamData);
-            if (streamData.Length > 0)
-            {
-                var fileSaveResult = new FileSaveResultDto();
-
-                string folder = typeof(T).Name;
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    folder = folder.Replace(@"\", "/");
-                }
-
-                string folderName = supportedFileType switch
-                {
-                    FileType.Image => Path.Combine("Files", "Images", folder),
-                    _ => Path.Combine("Files", "Others", folder),
-                };
-                string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                Directory.CreateDirectory(pathToSave);
-
-                string fileName = file.FileName.Trim('"');
-                fileName = RemoveSpecialCharacters(fileName);
-                fileName = fileName.ReplaceWhitespace("-");
-                fileName += Path.GetExtension(file.FileName).Trim();
-                string fullPath = Path.Combine(pathToSave, fileName);
-                string dbPath = Path.Combine(folderName, fileName);
-                if (File.Exists(dbPath))
-                {
-                    dbPath = NextAvailableFilename(dbPath);
-                    fullPath = NextAvailableFilename(fullPath);
-                }
-
-                using var stream = new FileStream(fullPath, FileMode.Create);
-                await streamData.CopyToAsync(stream, cancellationToken);
-
-                fileSaveResult.FilePath = dbPath.Replace("\\", "/");
-                fileSaveResult.Extension = Path.GetExtension(file.FileName).ToLower();
-                fileSaveResult.FileName = fileName;
-
-                return fileSaveResult;
-            }
-            else
-            {
-                return null;
-            }
+            folder = folder.Replace(@"\", "/");
         }
 
-       
+        string folderName = supportedFileType switch
+        {
+            FileType.Image => Path.Combine("Files", "Images", folder),
+            FileType.Video => Path.Combine("Files", "Videos", folder),
+            _ => Path.Combine("Files", "Others", folder),
+        };
+        //switch (supportedFileType)
+        //{
+        //    case FileType.Image:
+        //        folderName = Path.Combine("Files", "Images", folder);
+        //        break;
+        //    case FileType.Video:
+        //        folderName = Path.Combine("Files", "Videos", folder);
+        //        break;
+        //    default:
+        //        folderName = Path.Combine("Files", "Others", folder);
+        //        break;
+        //}
+
+        string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+        Directory.CreateDirectory(pathToSave);
+
+        var fileName = file.FileName.Trim('"');
+        var fileExtension = Path.GetExtension(file.FileName).ToLower();
+        var uniqueFileName = Guid.NewGuid().ToString();
+
+        var uniqueFileNameWithExtension = uniqueFileName + fileExtension;
+
+        fileName = RemoveSpecialCharacters(fileName);
+        fileName = fileName.ReplaceWhitespace("-");
+
+        string fullPath = Path.Combine(pathToSave, uniqueFileNameWithExtension);
+        string dbPath = Path.Combine(folderName, uniqueFileNameWithExtension);
+
+        if (File.Exists(dbPath))
+        {
+            dbPath = NextAvailableFilename(dbPath);
+            fullPath = NextAvailableFilename(fullPath);
+        }
+
+        using (FileStream fileStream = new FileStream(fullPath, FileMode.Create))
+        {
+            await file.CopyToAsync(fileStream);
+        }
+
+        fileSaveResult.FilePath = dbPath.Replace("\\", "/");
+        fileSaveResult.Extension = fileExtension;
+        fileSaveResult.FileName = fileName;
+        fileSaveResult.Size = Convert.ToInt32(Math.Ceiling((double)file.Length / 1000)); //KB
+
+        return fileSaveResult;
     }
 
     public static string RemoveSpecialCharacters(string str)
@@ -136,5 +154,14 @@ public class LocalFileStorageService : IFileStorageService
         }
 
         return string.Format(pattern, max);
+    }
+
+    public string GetFilePath(string? path)
+    {
+        if (string.IsNullOrEmpty(path)) return string.Empty;
+
+        var baseUri = new Uri(_context.HttpContext.Request.Scheme + "://" + _context.HttpContext.Request.Host.Value);
+        var myUri = new Uri(baseUri, path);
+        return myUri.AbsoluteUri;
     }
 }
