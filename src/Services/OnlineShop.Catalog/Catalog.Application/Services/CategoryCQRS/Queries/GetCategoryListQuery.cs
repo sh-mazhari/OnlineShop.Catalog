@@ -20,10 +20,10 @@ namespace Catalog.Application.Services.CategoryCQRS.Queries
 
     public class CategoryListQueryHandler : IRequestHandler<GetCategoryListQuery, List<GetCategoryListQueryResponse>>
     {
-        private readonly IGenericRepository<Category> _categoryRepository;
+        private readonly IRepository<Category> _categoryRepository;
         private readonly IFileStorageService _fileStorageService;
 
-        public CategoryListQueryHandler(IGenericRepository<Category> categoryRepository,
+        public CategoryListQueryHandler(IRepository<Category> categoryRepository,
             IFileStorageService fileStorageService)
         {
             _categoryRepository = categoryRepository;

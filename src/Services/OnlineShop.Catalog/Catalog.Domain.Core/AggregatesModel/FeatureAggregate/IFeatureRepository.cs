@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Catalog.Domain.Core.AggregatesModel.FeatureAggregate
 {
-    public interface IFeatureRepository : IRepository<Feature>
+    public interface IFeatureRepository : ICustomRepository<Feature>
     {
         Task<Feature> Add(Feature feature);
         Feature Update(Feature feature);

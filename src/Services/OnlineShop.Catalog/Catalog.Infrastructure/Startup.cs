@@ -9,6 +9,7 @@ using MediatR;
 using Catalog.Infrastructure.Common;
 using Catalog.Infrastructure.FileStorage;
 using Catalog.Infrastructure.Repositories;
+using Catalog.Domain.Core.SeedWork;
 
 namespace Catalog.Infrastructure;
 
@@ -20,8 +21,8 @@ public static class Startup
         return services
             .AddMediatR(Assembly.GetExecutingAssembly())
             .AddServices()
-            .AddScoped(typeof(Catalog.Domain.Core.SeedWork.IReadRepository<>), typeof(ApplicationDbRepository<>))
-            .AddScoped(typeof(Catalog.Domain.Core.SeedWork.IGenericRepository<>), typeof(ApplicationDbRepository<>));
+            .AddScoped(typeof(IReadRepository<>), typeof(ApplicationDbRepository<>))
+            .AddScoped(typeof(IRepository<>), typeof(ApplicationDbRepository<>));
     }
 
 

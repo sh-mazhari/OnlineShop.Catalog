@@ -7,7 +7,7 @@ using Mapster;
 namespace Catalog.Infrastructure.Repositories;
 
 // Inherited from Ardalis.Specification's RepositoryBase<T>
-public class ApplicationDbRepository<T> : RepositoryBase<T>, IReadRepository<T>, IGenericRepository<T>
+public class ApplicationDbRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
     where T : class, IAggregateRoot
 {
     public ApplicationDbRepository(CatalogContext dbContext)
